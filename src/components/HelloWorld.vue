@@ -26,7 +26,8 @@
         <v-data-table v-model:items-per-page="itemsPerPage"
         :headers="headers"
         :items="wafers"
-        :items-per-page-text="表示行数">
+        :items-per-page-options="pages"
+        items-per-page-text="表示行数">
         </v-data-table>
       </v-tabs-window-item>
     </v-tabs-window>
