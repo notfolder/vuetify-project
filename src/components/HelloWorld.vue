@@ -28,6 +28,9 @@
         :items="wafers"
         :items-per-page-options="pages"
         items-per-page-text="表示行数">
+          <template v-slot:item.id="{ item }">
+            <a :href="item.id"> {{ item.id }}</a>
+          </template>
         </v-data-table>
       </v-tabs-window-item>
     </v-tabs-window>

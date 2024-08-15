@@ -1,7 +1,10 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld />
+      <v-app-bar color="primary">
+      <v-app-bar-title>title</v-app-bar-title>
+      </v-app-bar>
+      <RouterView />
     </v-main>
 
     <AppFooter />
@@ -9,5 +12,5 @@
 </template>
 
 <script setup>
-  //
+import { RouterView } from "vue-router";
 </script>

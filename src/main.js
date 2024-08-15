@@ -13,7 +13,11 @@ import App from './App.vue'
 // Composables
 import { createApp } from 'vue'
 
-const app = createApp(App)
+// ルーティングのために追加
+// import VueRouter from 'vue-router'
+import router from './router'
+
+const app = createApp(App).use(router)
 
 registerPlugins(app)
 
