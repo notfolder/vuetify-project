@@ -4,6 +4,7 @@
       <v-tab value="test1">test1</v-tab>
       <v-tab value="test2">test2</v-tab>
       <v-tab value="test3">test3</v-tab>
+      <v-tab value="test4">test4</v-tab> <!-- test4タブを追加 -->
     </v-tabs>
     <v-tabs-window v-model="tab">
       <v-tabs-window-item value="test1">
@@ -39,12 +40,20 @@
           </v-row>
         </v-container>
       </v-tabs-window-item>
+      <v-tabs-window-item value="test4"> <!-- test4タブの内容 -->
+        <TextInputPage /> <!-- TextInputPageコンポーネントを埋め込み -->
+      </v-tabs-window-item>
     </v-tabs-window>
   </v-container>
 </template>
 
 <script>
+import TextInputPage from './TextInputPage.vue'; // TextInputPageをインポート
+
 export default {
+  components: {
+    TextInputPage, // コンポーネントを登録
+  },
   data: () => ({
     tab: null,
     generation: "",

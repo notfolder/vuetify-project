@@ -5,7 +5,6 @@
         <v-app-bar-title>title</v-app-bar-title>
       </v-app-bar>
       <RouterView />
-      <TextInputPage /> <!-- 新しいコンポーネントを埋め込み -->
     </v-main>
 
     <AppFooter />

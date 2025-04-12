@@ -23,6 +23,9 @@
 <script setup>
 import { ref } from "vue";
 
+// グローバル変数として word_separator を定義
+const word_separator = /([\s,()]+)/; // 区切り文字をスペース、カンマ、括弧に変更
+
 // サジェストリスト
 const suggestions = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"];
 const input = ref("");
@@ -37,9 +40,9 @@ const updateSuggestions = () => {
     return;
   }
 
-  // 入力をスペースや記号で分割し、最後の単語を取得
-  const words = input.value.split(/[\s,.;!?]+/);
-  const lastWord = words[words.length - 1].toLowerCase();
+  // 入力をスペースや記号で分割し、最後の単語と区切り文字を取得
+  const parts = input.value.split(word_separator);
+  const lastWord = parts[parts.length - 1].toLowerCase();
 
   // 最後の単語に基づいてサジェストを更新
   filteredSuggestions.value = lastWord
@@ -50,9 +53,13 @@ const updateSuggestions = () => {
 
 // サジェストをクリックしたときに入力に反映
 const selectSuggestion = (suggestion) => {
-  const words = input.value.split(/[\s,.;!?]+/);
-  words[words.length - 1] = suggestion; // 最後の単語をサジェストに置き換え
-  input.value = words.join(" "); // 再構築して入力に反映
+  const parts = input.value.split(word_separator);
+
+  // 最後の単語をサジェストに置き換え
+  parts[parts.length - 1] = suggestion;
+
+  // 再構築して入力に反映（区切り文字を保持）
+  input.value = parts.join("");
   filteredSuggestions.value = [];
   activeSuggestionIndex.value = -1;
 };
