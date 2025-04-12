@@ -23,15 +23,21 @@
       </v-tabs-window-item>
       <v-tabs-window-item value="test3">
         <div>test3</div>
-        <v-data-table v-model:items-per-page="itemsPerPage"
-        :headers="headers"
-        :items="wafers"
-        :items-per-page-options="pages"
-        items-per-page-text="表示行数">
-          <template v-slot:item.id="{ item }">
-            <a :href="item.id"> {{ item.id }}</a>
-          </template>
-        </v-data-table>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-data-table v-model:items-per-page="itemsPerPage"
+              :headers="headers"
+              :items="wafers"
+              :items-per-page-options="pages"
+              items-per-page-text="表示行数">
+                <template v-slot:item.id="{ item }">
+                  <a :href="item.id"> {{ item.id }}</a> 
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-tabs-window-item>
     </v-tabs-window>
   </v-container>

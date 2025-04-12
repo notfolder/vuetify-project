@@ -1,0 +1,87 @@
+<template>
+  <v-container>
+    <v-textarea
+      v-model="input"
+      label="入力してください"
+      outlined
+      @input="updateSuggestions"
+      @keydown="handleKeydown"
+    ></v-textarea>
+    <v-list v-if="filteredSuggestions.length > 0">
+      <v-list-item
+        v-for="(suggestion, index) in filteredSuggestions"
+        :key="index"
+        @click="selectSuggestion(suggestion)"
+        :class="{ 'v-list-item--active': index === activeSuggestionIndex }"
+      >
+        <v-list-item-title>{{ suggestion }}</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-container>
+</template>
+
+<script setup>
+import { ref } from "vue";
+
+// サジェストリスト
+const suggestions = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"];
+const input = ref("");
+const filteredSuggestions = ref([]);
+const activeSuggestionIndex = ref(-1); // 現在選択中のサジェストのインデックス
+
+// 入力に基づいてサジェストを更新
+const updateSuggestions = () => {
+  if (!input.value) {
+    filteredSuggestions.value = [];
+    activeSuggestionIndex.value = -1;
+    return;
+  }
+
+  // 入力をスペースや記号で分割し、最後の単語を取得
+  const words = input.value.split(/[\s,.;!?]+/);
+  const lastWord = words[words.length - 1].toLowerCase();
+
+  // 最後の単語に基づいてサジェストを更新
+  filteredSuggestions.value = lastWord
+    ? suggestions.filter((word) => word.toLowerCase().includes(lastWord))
+    : [];
+  activeSuggestionIndex.value = -1; // サジェストが更新されたら選択をリセット
+};
+
+// サジェストをクリックしたときに入力に反映
+const selectSuggestion = (suggestion) => {
+  const words = input.value.split(/[\s,.;!?]+/);
+  words[words.length - 1] = suggestion; // 最後の単語をサジェストに置き換え
+  input.value = words.join(" "); // 再構築して入力に反映
+  filteredSuggestions.value = [];
+  activeSuggestionIndex.value = -1;
+};
+
+// キーボードイベントを処理
+const handleKeydown = (event) => {
+  if (filteredSuggestions.value.length === 0) return;
+
+  if (event.key === "ArrowDown") {
+    // 下キーで次のサジェストを選択
+    activeSuggestionIndex.value =
+      (activeSuggestionIndex.value + 1) % filteredSuggestions.value.length;
+    event.preventDefault();
+  } else if (event.key === "ArrowUp") {
+    // 上キーで前のサジェストを選択
+    activeSuggestionIndex.value =
+      (activeSuggestionIndex.value - 1 + filteredSuggestions.value.length) %
+      filteredSuggestions.value.length;
+    event.preventDefault();
+  } else if (event.key === "Enter" && activeSuggestionIndex.value !== -1) {
+    // Enterキーで現在選択中のサジェストを確定
+    selectSuggestion(filteredSuggestions.value[activeSuggestionIndex.value]);
+    event.preventDefault();
+  }
+};
+</script>
+
+<style scoped>
+.v-list-item--active {
+  background-color: #e0e0e0; /* 選択中のアイテムの背景色 */
+}
+</style>
