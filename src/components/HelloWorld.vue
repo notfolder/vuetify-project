@@ -45,7 +45,7 @@
         <TextInputPage :suggestions="suggestions" /> <!-- TextInputPageコンポーネントを埋め込み、suggestionsをpropsで渡す -->
       </v-tabs-window-item>
       <v-tabs-window-item value="test5"> <!-- test5タブの内容 -->
-        <SuggestionsEditPage /> <!-- SuggestionsEditPageコンポーネントを埋め込み -->
+        <SuggestionsEditPage v-model="suggestions" /> <!-- SuggestionsEditPageコンポーネントにv-modelでsuggestionsをバインド -->
       </v-tabs-window-item>
     </v-tabs-window>
   </v-container>
