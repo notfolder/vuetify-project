@@ -42,12 +42,13 @@
         </v-container>
       </v-tabs-window-item>
       <v-tabs-window-item value="test4"> <!-- test4タブの内容 -->
-        <TextInputPage :suggestions="suggestions" /> <!-- TextInputPageコンポーネントを埋め込み、suggestionsをpropsで渡す -->
+        <TextInputPage :suggestions="suggestions" v-model="textInputContent" /> <!-- TextInputPageにv-modelを追加 -->
       </v-tabs-window-item>
       <v-tabs-window-item value="test5"> <!-- test5タブの内容 -->
         <SuggestionsEditPage v-model="suggestions" /> <!-- SuggestionsEditPageコンポーネントにv-modelでsuggestionsをバインド -->
       </v-tabs-window-item>
     </v-tabs-window>
+    <v-textarea label="suggestテキスト内容" v-model="textInputContent"></v-textarea> <!-- 最後のテキストエリアにv-modelを追加 -->
   </v-container>
 </template>
 
@@ -95,6 +96,7 @@ export default {
       {no: 10, id: "XXX10", ope: "YYY10", ver: "10"},
     ],
     suggestions: ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"], // suggestionsデータを追加
+    textInputContent: '', // TextInputPageの内容を保持するデータ
   }),
 }
 </script>

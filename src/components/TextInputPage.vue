@@ -4,7 +4,7 @@
       v-model="input"
       label="入力してください"
       outlined
-      @input="updateSuggestions"
+      @input="handleInput"
       @keydown="handleKeydown"
     ></v-textarea>
     <v-list v-if="filteredSuggestions.length > 0">
@@ -21,23 +21,36 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, defineEmits, watch } from "vue";
 
 // グローバル変数として word_separator を定義
 const word_separator = /([\s,()]+)/; // 区切り文字をスペース、カンマ、括弧に変更
 
-// Props を定義
+// Props と Emits を定義 (v-model サポート)
 const props = defineProps({
   suggestions: {
     type: Array,
     required: true,
   },
+  modelValue: { // v-model 用の prop
+    type: String,
+    default: '', // デフォルト値を空文字に
+  },
 });
-const input = ref("");
+
+const emit = defineEmits(['update:modelValue']); // v-model 用の emit
+
+const input = ref(props.modelValue); // 内部状態として input を維持し、props.modelValue で初期化
 const filteredSuggestions = ref([]);
 const activeSuggestionIndex = ref(-1); // 現在選択中のサジェストのインデックス
 
-// 入力に基づいてサジェストを更新
+// テキストエリアの入力イベントハンドラ
+const handleInput = () => {
+  emit('update:modelValue', input.value); // 内部の input の変更を emit
+  updateSuggestions(); // サジェストを更新
+};
+
+// 入力に基づいてサジェストを更新 (内部の input を参照)
 const updateSuggestions = () => {
   if (!input.value) {
     filteredSuggestions.value = [];
@@ -56,7 +69,7 @@ const updateSuggestions = () => {
   activeSuggestionIndex.value = -1; // サジェストが更新されたら選択をリセット
 };
 
-// サジェストをクリックしたときに入力に反映
+// サジェストをクリックしたときに入力に反映 (内部の input を更新)
 const selectSuggestion = (suggestion) => {
   const parts = input.value.split(word_separator);
 
@@ -65,8 +78,10 @@ const selectSuggestion = (suggestion) => {
 
   // 再構築して入力に反映（区切り文字を保持）
   input.value = parts.join("");
+  emit('update:modelValue', input.value); // 変更を emit
   filteredSuggestions.value = [];
   activeSuggestionIndex.value = -1;
+  updateSuggestions(); // サジェストを更新
 };
 
 // キーボードイベントを処理
@@ -90,6 +105,18 @@ const handleKeydown = (event) => {
     event.preventDefault();
   }
 };
+
+// props.modelValue が外部から変更された場合に内部の input を更新する
+watch(() => props.modelValue, (newValue) => {
+  if (newValue !== input.value) { // 無限ループを防ぐ
+    input.value = newValue;
+    updateSuggestions(); // 外部からの変更でもサジェストを更新
+  }
+});
+
+// 初期表示時にサジェストを更新
+updateSuggestions();
+
 </script>
 
 <style scoped>
