@@ -5,6 +5,7 @@
       <v-tab value="test2">test2</v-tab>
       <v-tab value="test3">test3</v-tab>
       <v-tab value="test4">test4</v-tab> <!-- test4タブを追加 -->
+      <v-tab value="test5">test5</v-tab> <!-- test5タブを追加 -->
     </v-tabs>
     <v-tabs-window v-model="tab">
       <v-tabs-window-item value="test1">
@@ -43,16 +44,21 @@
       <v-tabs-window-item value="test4"> <!-- test4タブの内容 -->
         <TextInputPage :suggestions="suggestions" /> <!-- TextInputPageコンポーネントを埋め込み、suggestionsをpropsで渡す -->
       </v-tabs-window-item>
+      <v-tabs-window-item value="test5"> <!-- test5タブの内容 -->
+        <SuggestionsEditPage /> <!-- SuggestionsEditPageコンポーネントを埋め込み -->
+      </v-tabs-window-item>
     </v-tabs-window>
   </v-container>
 </template>
 
 <script>
 import TextInputPage from './TextInputPage.vue'; // TextInputPageをインポート
+import SuggestionsEditPage from './SuggestionsEditPage.vue'; // SuggestionsEditPageをインポート
 
 export default {
   components: {
     TextInputPage, // コンポーネントを登録
+    SuggestionsEditPage, // コンポーネントを登録
   },
   data: () => ({
     tab: null,
