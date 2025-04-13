@@ -41,7 +41,7 @@
         </v-container>
       </v-tabs-window-item>
       <v-tabs-window-item value="test4"> <!-- test4タブの内容 -->
-        <TextInputPage /> <!-- TextInputPageコンポーネントを埋め込み -->
+        <TextInputPage :suggestions="suggestions" /> <!-- TextInputPageコンポーネントを埋め込み、suggestionsをpropsで渡す -->
       </v-tabs-window-item>
     </v-tabs-window>
   </v-container>
@@ -87,7 +87,8 @@ export default {
       {no:  8, id:  "XXX8", ope:  "YYY8", ver:  "8"},
       {no:  9, id:  "XXX9", ope:  "YYY9", ver:  "9"},
       {no: 10, id: "XXX10", ope: "YYY10", ver: "10"},
-    ]
+    ],
+    suggestions: ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"], // suggestionsデータを追加
   }),
 }
 </script>

@@ -21,13 +21,18 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
 
 // グローバル変数として word_separator を定義
 const word_separator = /([\s,()]+)/; // 区切り文字をスペース、カンマ、括弧に変更
 
-// サジェストリスト
-const suggestions = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"];
+// Props を定義
+const props = defineProps({
+  suggestions: {
+    type: Array,
+    required: true,
+  },
+});
 const input = ref("");
 const filteredSuggestions = ref([]);
 const activeSuggestionIndex = ref(-1); // 現在選択中のサジェストのインデックス
@@ -46,7 +51,7 @@ const updateSuggestions = () => {
 
   // 最後の単語に基づいてサジェストを更新
   filteredSuggestions.value = lastWord
-    ? suggestions.filter((word) => word.toLowerCase().includes(lastWord))
+    ? props.suggestions.filter((word) => word.toLowerCase().includes(lastWord))
     : [];
   activeSuggestionIndex.value = -1; // サジェストが更新されたら選択をリセット
 };
